@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 
@@ -10,7 +9,7 @@ class NoteCreate(NoteBase):
     pass
 
 class NoteResponse(NoteBase):
-    id: uuid.UUID
+    id: str
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)

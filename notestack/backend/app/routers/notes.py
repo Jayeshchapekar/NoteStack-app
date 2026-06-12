@@ -36,9 +36,9 @@ def create_note(note_in: NoteCreate, db: Session = Depends(get_db)):
         )
 
 @router.get("/{id}", response_model=NoteResponse)
-def get_note(id: uuid.UUID, db: Session = Depends(get_db)):
+def get_note(id: str, db: Session = Depends(get_db)):
     try:
-        note = db.query(Note).filter(Note.id == str(id)).first()
+        note = db.query(Note).filter(Note.id == id).first()
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -53,9 +53,9 @@ def get_note(id: uuid.UUID, db: Session = Depends(get_db)):
     return note
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_note(id: uuid.UUID, db: Session = Depends(get_db)):
+def delete_note(id: str, db: Session = Depends(get_db)):
     try:
-        note = db.query(Note).filter(Note.id == str(id)).first()
+        note = db.query(Note).filter(Note.id == id).first()
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
