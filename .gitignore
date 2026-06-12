@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+
+# Node / React
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Environment & Credentials
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Databases
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# IDEs / Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS Files
+.DS_Store
+Thumbs.db
