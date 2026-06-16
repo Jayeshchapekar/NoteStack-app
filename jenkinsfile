@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+    environment {
+    DOCKER_CREDS = credentials('DockerHubcreds')
+    BACKEND_IMAGE  = 'jayeshchapekar/notestack-backend'
+    FRONTEND_IMAGE = 'jayeshchapekar/notestack-frontend'
+}
+    stages {
+        stage('git checkout') {
+            steps {
+                echo "checking out github repo"
+                git branch: 'main', url: 'https://github.com/Jayeshchapekar/NoteStack-app.git'
+                echo "checkout successfull"
+            }
+        }
+        stage('Cleanup') {
+            steps {
+                sh 'docker compose down || true'
+            }
+        }
+
+        stage('build satge') {
+            steps {
+                echo "building the project"
+                sh 'docker compose build '
+                echo "build successfull"
+            }
+        }
+        stage('Validation') {
+            steps {
+               echo "Starting application"
+
+               sh 'docker compose up -d'
+
+               echo "Checking running containers"
+               sh 'docker ps'
+
+               echo "Waiting for backend to be ready..."
+               sh '''
+                     for i in {1..15}; do
+                      curl -f http://localhost:8000/api/notes && echo "Backend OK" && break
+                      echo "Backend not ready yet... retrying"
+                      sleep 5
+                      done
+                   '''
+
+                echo "Checking frontend..."
+                sh '''
+                    for i in {1..10}; do
+                    curl -f http://localhost:8080 && echo "Frontend OK" && break
+                    echo "Frontend not ready yet... retrying"
+                     sleep 3
+                     done
+                     '''
+                echo "Validation successful"
+            }
+        }
+         stage("docker login") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'DockerHubcreds', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+}
+            }
+        }
+        stage('Docker Push') {
+            steps {
+               sh "docker tag notestack-backend jayeshchapekar/notestack-backend:latest"
+               sh  "docker tag notestack-frontend jayeshchapekar/notestack-frontend:latest"
+               sh "docker push ${BACKEND_IMAGE}:latest"
+               sh "docker push ${FRONTEND_IMAGE}:latest"
+               sh "docker logout"
+            }
+        }
+    }
+}
