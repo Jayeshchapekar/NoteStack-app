@@ -6,9 +6,9 @@ This project focuses on automation, containerization, deployment validation, and
 
 🎯 DevOps Objective
 
-This project demonstrates an end-to-end CI/CD-driven deployment pipeline, including:
+This project demonstrates an end-to-end CI/CD-driven deployment pipeline:
 
-Automated build, test, and deployment workflow using Jenkins
+Automated build, test, and deployment using Jenkins
 Containerization of frontend and backend services using Docker
 Multi-service orchestration using Docker Compose
 Deployment validation using health checks
@@ -17,9 +17,9 @@ Secure credential handling using Jenkins credential store
 🧱 System Architecture
 GitHub → Jenkins Pipeline → Docker Build → Health Validation → Docker Hub → Deployment
 Runtime Architecture
-Frontend (React)  →  Backend API (Python)
-        ↑                  ↑
-   Docker Compose networking layer
+Frontend (React) → Backend API (Python)
+        ↑
+Docker Compose networking layer
 🧰 Tech Stack
 Frontend
 React (Vite)
@@ -47,95 +47,85 @@ Pipeline Flow
 Checkout → Cleanup → Build → Validate → Login → Push → Logout
 1. Source Code Checkout
 
-Pulls latest code from GitHub to ensure reproducible builds.
+Pulls latest code from GitHub for reproducible builds.
 
 2. Environment Cleanup
-
-Ensures clean state before deployment:
-
 docker compose down || true
 3. Build Stage
-
-Builds Docker images for all services:
-
 docker compose build
 
-✔ Produces versioned application artifacts
+✔ Produces versioned Docker images
 
 4. Deployment Validation (Quality Gate)
 
-Pipeline validates runtime readiness before publishing:
+Backend:
 
-Backend health check
 curl -f http://localhost:8000/api/notes
-Frontend health check
+
+Frontend:
+
 curl -f http://localhost:8080
 
-✔ Pipeline fails if services are not healthy
-✔ Ensures production-grade reliability gate
+✔ Pipeline fails if services are unhealthy
+✔ Ensures production-ready deployment validation
 
 5. Docker Registry Authentication
 
-Uses Jenkins Credentials Store (no hardcoded secrets).
+Uses Jenkins Credentials Store (no hardcoded secrets)
 
 6. Image Versioning & Publishing
 
-Docker images are:
+Docker images:
 
-Tagged
-Versioned (latest)
-Pushed to Docker Hub
 jayeshchapekar/notestack-backend:latest
 jayeshchapekar/notestack-frontend:latest
 🐳 Docker Strategy
-Container Model
 Backend → API service container
-Frontend → UI container (Nginx-based build)
-Compose → service orchestration layer
-Key Feature
+Frontend → UI container (Nginx build)
+Docker Compose → service orchestration layer
 
-✔ Service isolation with internal networking
+✔ Internal networking between services
 ✔ Reproducible environments across dev/staging/prod
 
-📊 DevOps Capabilities Demonstrated
+📊 DevOps Skills Demonstrated
 🔥 CI/CD Engineering
-Jenkins Pipeline as Code (fully automated)
-Build → Validate → Publish workflow
-Health-check gated deployments
+Jenkins Pipeline as Code
+Automated build → validate → deploy workflow
+Health-check gated deployment pipeline
 🔥 Containerization
-Dockerized full-stack architecture
-Environment consistency across systems
+Dockerized full-stack application
+Environment consistency using containers
 Immutable deployment artifacts
 🔥 Release Engineering
 Docker image tagging and publishing
-Artifact lifecycle management via Docker Hub
-Automated deployment-ready builds
+Docker Hub integration
+Automated artifact lifecycle
 🔥 Orchestration
-Multi-container coordination using Docker Compose
-Service dependency handling
-Internal networking between services
+Docker Compose multi-service setup
+Service dependency management
+Internal networking configuration
 🔥 Production Engineering Practices
-Runtime health checks before release
-Secure credential handling via Jenkins
+Runtime health checks before deployment
+Secure credential management in Jenkins
 Restart-safe container design
 Failure-aware pipeline execution
 🔥 System Design Thinking
-Designed full delivery pipeline:
+End-to-end delivery pipeline design:
 Code → Build → Validate → Package → Publish → Deploy
-Structured monorepo for scalable CI/CD workflows
-🚀 Key Engineering Highlights (What makes this strong)
+Structured monorepo for scalable CI/CD workflow
+🚀 Key Engineering Highlights
 Real Jenkins CI/CD pipeline (not simulated)
-Production-style deployment validation gates
+Production-style validation gates
 Docker-based microservice architecture
-Automated image publishing to registry
+Automated Docker Hub publishing
 End-to-end DevOps lifecycle implementation
-🚀 Future Production Enhancements
+🚀 Future Enhancements
 Kubernetes deployment (Helm charts)
 Terraform AWS infrastructure provisioning
 Prometheus + Grafana monitoring
 ELK centralized logging stack
 Blue-green deployment strategy
-Automated rollback on failure
+Automated rollback pipeline
 👤 Author
 
 Jayesh Chapekar
@@ -143,8 +133,13 @@ GitHub: https://github.com/Jayeshchapekar
 
 🏁 Final Summary
 
-This project implements a real-world DevOps CI/CD pipeline, covering:
+This project implements a real-world DevOps CI/CD pipeline:
 
 Code → Build → Validate → Containerize → Publish → Deploy
 
-It demonstrates production-level DevOps engineering skills, including CI/CD automation, container orchestration, and release engineering workflows used in modern cloud environments.
+It demonstrates production-level DevOps engineering skills in:
+
+CI/CD automation
+Container orchestration
+Release engineering
+Deployment validation
