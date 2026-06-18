@@ -70,6 +70,32 @@ pipeline {
                sh "docker push ${FRONTEND_IMAGE}:latest"
                sh "docker logout"
             }
+        }   
+    }  
+            post {
+
+        success {
+            mail to: 'jayeshchapekar28@gmail.com',
+                 subject: "✅ SUCCESS: ${currentBuild.fullDisplayName}",
+                 body: """
+Build SUCCESSFUL 🎉
+
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+URL: ${env.BUILD_URL}
+"""
+        }
+
+        failure {
+            mail to: 'jayeshchapekar28@gmail.com',
+                 subject: "❌ FAILURE: ${currentBuild.fullDisplayName}",
+                 body: """
+Build FAILED 🚨
+
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+URL: ${env.BUILD_URL}
+"""
         }
     }
 }
